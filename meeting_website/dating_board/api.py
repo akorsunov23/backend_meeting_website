@@ -14,18 +14,33 @@ class UsersListAPIView(LoginRequiredMixin, generics.ListAPIView):
     """
     Список всех пользователей с фильтрами и поиском.
     Доступен только аутентифицированным пользователям.
+    Реализована фильтрация по имени, фамилии, пола и дистанции.
     """
     queryset = User.objects.all()
     serializer_class = UserListSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['gender', 'first_name', 'last_name']
 
+    # def filter_queryset1(self, request, queryset):
+    #     alluser = queryset.exclude(id=self.request.user.id)
+    #     exclude_e = alluser
+    #     distparam = request.GET.get('distance')
+    #     if distparam:
+    #         for user in alluser:
+    #             from_loc = (self.request.user.latitude, self.request.user.latitude)
+    #             self_loc = (user.latitude, user.longitude)
+    #             distance = great_circle(from_loc, self_loc).km
+    #             if distance > float(distparam):
+    #                 exclude_e = exclude_e.exclude(id=user.id)
+    #     return exclude_e
 
-class LikeUserAPIView(GenericAPIView):
+
+class LikeUserAPIView(LoginRequiredMixin, GenericAPIView):
     """
     Оценка пользователей.
     Если объявится взаимная симпатия, пользователю отправившему оценку в ответ приходит почта.
     А также на почту обоих пользователей отправляется письмо о взаимной симпатии.
+    Доступен только аутентифицированным пользователям.
     """
     @staticmethod
     def get(request, pk):
