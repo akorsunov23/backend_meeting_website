@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django_filters.rest_framework import DjangoFilterBackend
-from geopy.distance import geodesic as GD
+from geopy.distance import geodesic
 from rest_framework import generics, status
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.response import Response
@@ -35,7 +35,7 @@ class UsersListAPIView(LoginRequiredMixin, generics.ListAPIView):
                 # координаты фильтруемого пользователя из БД
                 user_filter_coordinates = (user_filter.latitude, user_filter.longitude)
                 # геодезическое расстояние между точками
-                estimated_distance = GD(user_coordinates, user_filter_coordinates)
+                estimated_distance = geodesic(user_coordinates, user_filter_coordinates)
                 # если в пределах заданной дистанции, добавляем в результат
                 if estimated_distance <= float(distance):
                     result.append(user_filter.pk)
@@ -67,7 +67,7 @@ class LikeUserAPIView(LoginRequiredMixin, GenericAPIView):
 
                 message_to_user = f'Почта пользователя - {user_like.email}'
                 send_mail(
-                    subject=f'Вам понравился пользователь',
+                    subject='Вам понравился пользователь',
                     message=message_to_user,
                     from_email=DEFAULT_FROM_EMAIL,
                     recipient_list=[user.email, ]
@@ -76,7 +76,7 @@ class LikeUserAPIView(LoginRequiredMixin, GenericAPIView):
                 message_to_uses_like = f'У Вас взаимная симпатия с {user.first_name} {user.last_name}.\n' \
                                        f'Его почта - {user.email}.'
                 send_mail(
-                    subject=f'Вы понравились на сайте знакомств',
+                    subject='Вы понравились на сайте знакомств',
                     message=message_to_uses_like,
                     from_email=DEFAULT_FROM_EMAIL,
                     recipient_list=[user_like.email, ])

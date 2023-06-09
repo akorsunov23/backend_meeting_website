@@ -37,7 +37,6 @@ class User(AbstractUser):
         if self.photo:
             # обрабатываем изображение
             output = watermark_overlay(photo_user=self.photo)
-
             # Заменяем оригинальное изображение на обработанное
             self.photo = InMemoryUploadedFile(
                 output,
