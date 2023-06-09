@@ -22,12 +22,9 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Products API",
+      title="Backend-meeting-website",
       default_version='v1',
-      description="Description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="<your-gmail>@gmail.com"),
-      license=openapi.License(name="BSD License"),
+      contact=openapi.Contact(email="kors21vek@mail.ru"),
    ),
    public=True,
    permission_classes=[permissions.AllowAny],
