@@ -1,7 +1,7 @@
 from django.contrib.auth import login, logout
 from rest_framework import generics, status
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.generics import GenericAPIView
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
@@ -13,13 +13,14 @@ class CreateUserAPIView(generics.CreateAPIView):
     """Представление регистрации нового пользователя."""
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    parser_classes = (FormParser, MultiPartParser)
 
 
 class UserLoginAPIView(GenericAPIView):
     """Аутентификация существующего пользователя."""
     permission_classes = (AllowAny,)
     serializer_class = UserLoginSerializer
-    authentication_classes = (BasicAuthentication, SessionAuthentication, )
+    parser_classes = (FormParser, MultiPartParser)
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
