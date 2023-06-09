@@ -19,6 +19,9 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, verbose_name='электронная почта')
     photo = models.ImageField(upload_to='users_foto/', verbose_name='фотография')
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, verbose_name='пол')
+    longitude = models.FloatField(verbose_name='координата: долгота')
+    latitude = models.FloatField(verbose_name='координата: широта')
+    like = models.ManyToManyField('self', symmetrical=False, null=True, blank=True, verbose_name='оценка')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -34,7 +37,6 @@ class User(AbstractUser):
         if self.photo:
             # обрабатываем изображение
             output = watermark_overlay(photo_user=self.photo)
-
             # Заменяем оригинальное изображение на обработанное
             self.photo = InMemoryUploadedFile(
                 output,

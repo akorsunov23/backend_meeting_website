@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+
+
 from dotenv import load_dotenv
+from rest_framework.reverse import reverse_lazy
 
 load_dotenv()
 
@@ -42,7 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
+    'drf_yasg',
     'users',
+    'dating_board',
+
 ]
 
 MIDDLEWARE = [
@@ -131,3 +137,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
+LOGIN_URL = reverse_lazy('users:login_user')
+
+
+# Данные для отправки сообщений на почту пользователя.
+EMAIL_HOST = 'smtp.gmail.com'  # smpt настроен google почту
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL')  # почта администратора (с которой идёт отправка)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

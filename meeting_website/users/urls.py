@@ -1,13 +1,15 @@
 from django.urls import path
 
-from users.api import CreateUserView
+from users.api import \
+    CreateUserAPIView, \
+    UserLoginAPIView, \
+    UserLogoutAPIView
 
 app_name = 'users'
 
 
 urlpatterns = [
-    path('create/', CreateUserView.as_view(), name='create_user'),
-    # path('api/clients/<int:id>/match/', MatchCreateView.as_view(), name='create_match'),
-    # path('api/list/', UserListView.as_view(), name='user_list'),
-    # path('api/list/distance/', UserDistanceFilterView.as_view(), name='user_distance_list'),
+    path('create/', CreateUserAPIView.as_view(), name='create_user'),
+    path('login/', UserLoginAPIView.as_view(), name='login_user'),
+    path('logout/', UserLogoutAPIView.as_view(), name='logout_user'),
 ]
