@@ -22,11 +22,12 @@ class UsersListAPIView(LoginRequiredMixin, generics.ListAPIView):
     filterset_fields = ['gender', 'first_name', 'last_name']
 
     def get_queryset(self):
+        """Фильтрация по дистанции."""
         queryset = User.objects.exclude(pk=self.request.user.pk)
 
-        if self.request.GET.get('distance'):
+        if self.request.query_params.get('distance'):
             # заданная дистанция
-            distance = self.request.GET.get('distance')
+            distance = self.request.query_params.get('distance')
             # координаты запросившего пользователя
             user_coordinates = (self.request.user.latitude, self.request.user.longitude)
             result = list()
@@ -38,7 +39,7 @@ class UsersListAPIView(LoginRequiredMixin, generics.ListAPIView):
                 # если в пределах заданной дистанции, добавляем в результат
                 if estimated_distance <= float(distance):
                     result.append(user_filter.pk)
-
+            # возвращаем отфильтрованный queryset
             return queryset.filter(pk__in=result)
 
         return queryset
