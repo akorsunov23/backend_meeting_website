@@ -21,7 +21,8 @@ class User(AbstractUser):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, verbose_name='пол')
     longitude = models.FloatField(verbose_name='координата: долгота')
     latitude = models.FloatField(verbose_name='координата: широта')
-    like = models.ManyToManyField('self', symmetrical=False, null=True, blank=True, verbose_name='оценка')
+    like = models.ManyToManyField(
+        'self', related_name='likes', symmetrical=False, null=True, blank=True, verbose_name='оценка')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

@@ -141,8 +141,8 @@ LOGIN_URL = reverse_lazy('users:login_user')
 
 
 # Данные для отправки сообщений на почту пользователя.
-EMAIL_HOST = 'smtp.gmail.com'  # smpt настроен google почту
-EMAIL_PORT = 587
+EMAIL_HOST = os.getenv('EMAIL_HOST')  # smpt настроен google почту
+EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
